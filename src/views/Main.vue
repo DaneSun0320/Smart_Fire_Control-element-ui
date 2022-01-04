@@ -1,11 +1,7 @@
 <template>
   <el-container style="height:100%">
     <el-header>
-      <el-row type="flex">
-        <el-col :span="3" justify="start"><div style="font-weight: 900;color: #ffffff">物联网管理系统</div></el-col>
-        <el-col :span="6"><div class="grid-content bg-purple-light"></div></el-col>
-        <el-col :span="6"><div class="grid-content bg-purple"></div></el-col>
-      </el-row>
+      <Header></Header>
     </el-header>
     <el-container>
       <Aside></Aside>
@@ -15,20 +11,18 @@
 </template>
 <style lang="scss" scoped>
   .el-header{
+    width: 100%;
     background-color: #2c6df8;
     color: #2c6df8;
     text-align: center;
-    line-height: 60px;
   }
   </style>
 <script>
-// @ is an alias to /src
 import Aside from '@/components/Aside.vue'
+import Header from '@/components/Header.vue'
 
 export default {
   name: 'Main',
-  components: {
-    Aside
-  }
+  components: { Header, Aside }
 }
 </script>
