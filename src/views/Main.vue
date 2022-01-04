@@ -5,7 +5,9 @@
     </el-header>
     <el-container>
       <Aside></Aside>
-      <el-main>Main</el-main>
+      <el-main>
+        <router-view></router-view>
+      </el-main>
     </el-container>
   </el-container>
 </template>
@@ -20,7 +22,6 @@
 <script>
 import Aside from '@/components/Aside.vue'
 import Header from '@/components/Header.vue'
-
 export default {
   name: 'Main',
   components: { Header, Aside }

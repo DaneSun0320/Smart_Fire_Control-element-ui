@@ -1,9 +1,11 @@
 <template>
   <div id="app">
-    <router-view/>
+    <router-view></router-view>
   </div>
 </template>
+<script>
 
+</script>
 <style lang="scss">
   @font-face {
     font-family: 'webfont';
@@ -15,6 +17,9 @@
     url('//at.alicdn.com/t/webfont_of1b9ehnf7e.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
     url('//at.alicdn.com/t/webfont_of1b9ehnf7e.svg#NotoSansHans-DemiLight') format('svg'); /* iOS 4.1- */
   }
+body{
+margin: 0;
+}
 #app {
   font-family:"webfont" !important;
   font-size:16px;

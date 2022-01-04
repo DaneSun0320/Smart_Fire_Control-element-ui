@@ -1,9 +1,5 @@
 <template>
-    <el-row :gutter="20">
-        <el-col :span="12"></el-col>
-        <el-col :span="12"><div class="grid-content bg-purple"></div></el-col>
-    </el-row>
-
+    <h1>Home</h1>
 </template>
 
 <script>

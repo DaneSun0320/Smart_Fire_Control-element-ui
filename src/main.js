@@ -20,7 +20,8 @@ import {
   Col,
   Dropdown,
   DropdownMenu,
-  DropdownItem
+  DropdownItem,
+  Link
 } from 'element-ui'
 Vue.prototype.$echarts = echarts
 Vue.config.productionTip = false
@@ -40,6 +41,8 @@ Vue.use(Col)
 Vue.use(Dropdown)
 Vue.use(DropdownMenu)
 Vue.use(DropdownItem)
+Vue.use(Link)
+
 new Vue({
   router,
   store,

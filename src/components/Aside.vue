@@ -1,22 +1,31 @@
 <template>
-    <el-aside>
+    <el-aside >
+        <div @mouseenter="openMenu" @mouseleave="closeMenu">
         <el-menu
-                default-active="2"
+                default-active="/"
                 class="el-menu-vertical-demo"
+                :collapse="isCollapse"
                 @open="handleOpen"
                 @close="handleClose"
+                :router='true'
         >
-            <el-menu-item :index="item.path" v-for="item in menu" :key="item.path">
+            <el-menu-item :index="item.path" v-for="item in menu" :key="item.path" >
                 <i :class="item.icon"></i>
                 <span slot="title">{{item.label}}</span>
             </el-menu-item>
         </el-menu>
+        </div>
     </el-aside>
+
 </template>
 
 <style>
     .el-menu-vertical-demo:not(.el-menu--collapse) {
-        width: 150px;
+        width: 170px;
+        height:90vh;
+        min-height: 200px;
+    }
+    .el-menu--collapse{
         height:90vh;
         min-height: 200px;
     }
@@ -72,12 +81,21 @@ export default {
     }
   },
   methods: {
+    openMenu () {
+      this.isCollapse = false
+    },
+    closeMenu () {
+      this.isCollapse = true
+    },
     handleOpen (key, keyPath) {
       console.log(key, keyPath)
     },
     handleClose (key, keyPath) {
       console.log(key, keyPath)
     }
+  },
+  computed: {
+
   }
 }
 </script>
