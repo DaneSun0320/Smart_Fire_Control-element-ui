@@ -3,7 +3,7 @@ import App from './App.vue'
 import './registerServiceWorker'
 import router from './router'
 import store from './store'
-import echarts from 'echarts'
+import Viser from 'viser-vue'
 import {
   Button,
   Table,
@@ -21,10 +21,12 @@ import {
   Dropdown,
   DropdownMenu,
   DropdownItem,
-  Link
+  Card,
+  Divider
 } from 'element-ui'
-Vue.prototype.$echarts = echarts
+
 Vue.config.productionTip = false
+Vue.use(Viser)
 Vue.use(Button)
 Vue.use(Table)
 Vue.use(TableColumn)
@@ -41,8 +43,8 @@ Vue.use(Col)
 Vue.use(Dropdown)
 Vue.use(DropdownMenu)
 Vue.use(DropdownItem)
-Vue.use(Link)
-
+Vue.use(Card)
+Vue.use(Divider)
 new Vue({
   router,
   store,

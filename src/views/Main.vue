@@ -18,6 +18,9 @@
     color: #2c6df8;
     text-align: center;
   }
+  .el-main{
+    padding: 50px;
+  }
   </style>
 <script>
 import Aside from '@/components/Aside.vue'

@@ -1,7 +1,7 @@
 <template>
     <header>
         <div class="l-content">
-            <h3 style="color: #ffffff">物联网管理系统</h3>
+            <h3 style="color: #ffffff">智慧消防系统</h3>
         </div>
         <div class="r-content">
             <el-dropdown trigger="click" size="mini">

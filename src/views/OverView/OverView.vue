@@ -1,18 +1,139 @@
 <template>
-    <h1>Home</h1>
+    <div>
+        <div class="card-welcome">Hello,</div>
+        <div class="card-welcome-user">DaneSun</div>
+    <el-row :gutter="40">
+        <el-col :span="18">
+            <el-card shadow="hover" style="height: 400px" >
+                <el-row type="flex"  justify="space-between">
+                    <div class="card-title">数据图表</div>
+                    <el-button class="card-button" size="small" icon="el-icon-download" round>导出</el-button>
+                </el-row>
+
+                <el-row type="flex" class="row-bg">
+                    <div id="c1" class="graph"></div>
+                </el-row>
+            </el-card>
+        </el-col>
+        <el-col :span="6">
+            <el-card shadow="hover" class="card-data" >
+                <el-row :gutter="20" type="flex">
+                    <el-col :span="8">
+                            <img :src="temp" style="height: 70px;width: 70px;"/>
+                    </el-col>
+                    <el-col :span="16" >
+                        <div style="font-size: 14px;color: #6b8196;">实时温度</div>
+                        <div style="margin-top: 20px;font-size: 20px;">25℃</div>
+                    </el-col>
+                </el-row>
+            </el-card>
+            <el-card shadow="hover" class="card-data" >
+                <el-row :gutter="20" type="flex">
+                    <el-col :span="8">
+                        <img :src="smoke" style="height: 70px;width: 70px;"/>
+                    </el-col>
+                    <el-col :span="16" >
+                        <div style="font-size: 14px;color: #6b8196;">烟雾监控</div>
+                        <div style="margin-top: 20px;font-size: 20px;">正常</div>
+                    </el-col>
+                </el-row>
+            </el-card>    <el-card shadow="hover" class="card-data" >
+            <el-row :gutter="20" type="flex">
+                <el-col :span="8">
+                    <img :src="fire" style="height: 70px;width: 70px;"/>
+                </el-col>
+                <el-col :span="16" >
+                    <div style="font-size: 14px;color: #6b8196;">火焰监控</div>
+                    <div style="margin-top: 20px;font-size: 20px;">正常</div>
+                </el-col>
+            </el-row>
+        </el-card>
+        </el-col>
+    </el-row>
+    </div>
 </template>
 
 <script>
+import * as G2 from '@antv/g2'
 export default {
-  name: 'OverView'
+  name: 'OverView',
+  data () {
+    return {
+      temp: require('../../assets/temp.png'),
+      smoke: require('../../assets/smoke.png'),
+      fire: require('../../assets/fire.png')
+    }
+  },
+  mounted () {
+    const data = [
+      { genre: 'A', sold: 275 },
+      { genre: 'B', sold: 115 },
+      { genre: 'C', sold: 120 },
+      { genre: 'D', sold: 350 },
+      { genre: 'E', sold: 150 },
+      { genre: 'F', sold: 275 },
+      { genre: 'G', sold: 115 },
+      { genre: 'H', sold: 120 },
+      { genre: 'I', sold: 350 },
+      { genre: 'J', sold: 150 }
+    ]
+
+    // Step 1: 创建 Chart 对象
+    const chart = new G2.Chart({
+      container: 'c1', // 指定图表容器 ID
+      width: 800, // 指定图表宽度
+      height: 250 // 指定图表高度
+    })
+
+    // Step 2: 载入数据源
+    chart.data(data)
+
+    // Step 3：创建图形语法，绘制柱状图
+    chart.interval().position('genre*sold')
+
+    // Step 4: 渲染图表
+    chart.render()
+  }
 }
+
 </script>
 
 <style scoped>
-    .el-row {
+    .el-card {
+        border-radius: 18px;
+    }
+    .card-title{
+        display: flex;
+        text-align: start;
+        margin-left: 10px;
+        align-items: center;
+    }
+    .card-button{
+        display: flex;
+        text-align: end;
+        margin-right: 10px;
+        align-items: center;
+        font-weight: bold;
+    }
+    .card-welcome{
+        font-size: 16px;
+        font-weight: normal;
+        text-align: start;
+        color: #6b8196;
+    }
+    .card-welcome-user{
+        padding-top: 15px;
+        padding-bottom: 30px;
+        font-size: 25px;
+        text-align: start;
+    }
+    .card-data{
+        height: 120px;
         margin-bottom: 20px;
     }
-    .el-col {
-        border-radius: 4px;
-    }
+.graph{
+    width: 800px;
+    margin:0 auto;
+    margin-top: 50px;
+}
 </style>

@@ -1,10 +1,8 @@
 <template>
-    <el-aside >
-        <div @mouseenter="openMenu" @mouseleave="closeMenu">
+    <el-aside width="180px">
         <el-menu
                 default-active="/"
                 class="el-menu-vertical-demo"
-                :collapse="isCollapse"
                 @open="handleOpen"
                 @close="handleClose"
                 :router='true'
@@ -14,18 +12,13 @@
                 <span slot="title">{{item.label}}</span>
             </el-menu-item>
         </el-menu>
-        </div>
     </el-aside>
 
 </template>
 
-<style>
+<style scoped>
     .el-menu-vertical-demo:not(.el-menu--collapse) {
-        width: 170px;
-        height:90vh;
-        min-height: 200px;
-    }
-    .el-menu--collapse{
+        width: 180px;
         height:90vh;
         min-height: 200px;
     }
@@ -35,7 +28,6 @@
 export default {
   data () {
     return {
-      isCollapse: true,
       menu: [
         {
           path: '/',
