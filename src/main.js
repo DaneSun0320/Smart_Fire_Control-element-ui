@@ -22,7 +22,10 @@ import {
   DropdownMenu,
   DropdownItem,
   Card,
-  Divider
+  Divider,
+  Backtop,
+  Icon,
+  Pagination
 } from 'element-ui'
 
 Vue.config.productionTip = false
@@ -45,6 +48,9 @@ Vue.use(DropdownMenu)
 Vue.use(DropdownItem)
 Vue.use(Card)
 Vue.use(Divider)
+Vue.use(Backtop)
+Vue.use(Icon)
+Vue.use(Pagination)
 new Vue({
   router,
   store,

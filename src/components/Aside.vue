@@ -1,5 +1,5 @@
 <template>
-    <el-aside width="180px">
+    <el-aside style="width: 200px">
         <el-menu
                 default-active="/"
                 class="el-menu-vertical-demo"
@@ -18,9 +18,9 @@
 
 <style scoped>
     .el-menu-vertical-demo:not(.el-menu--collapse) {
-        width: 180px;
-        height:90vh;
-        min-height: 200px;
+        height:100%;
+        min-height: 92vh;
+        border-right: solid 0px;
     }
 </style>
 
@@ -42,14 +42,6 @@ export default {
           name: 'control',
           label: '设备控制',
           icon: 'el-icon-set-up',
-          url: ''
-
-        },
-        {
-          path: '/logs',
-          name: 'logs',
-          label: '系统日志',
-          icon: 'el-icon-document',
           url: ''
 
         },

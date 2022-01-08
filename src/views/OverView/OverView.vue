@@ -7,7 +7,6 @@
             <el-card shadow="hover" style="height: 400px" >
                 <el-row type="flex"  justify="space-between">
                     <div class="card-title">数据图表</div>
-                    <el-button class="card-button" size="small" icon="el-icon-download" round>导出</el-button>
                 </el-row>
 
                 <el-row type="flex" class="row-bg">
@@ -50,6 +49,47 @@
         </el-card>
         </el-col>
     </el-row>
+        <el-row :gutter="40">
+            <el-col :span="24">
+                <el-card shadow="hover" style="min-height: 400px" >
+                    <el-row type="flex"  justify="space-between">
+                        <div class="card-title">运行日志</div>
+                        <el-button class="card-button" size="small" icon="el-icon-download" round>导出</el-button>
+                    </el-row>
+                    <el-row type="flex">
+                      <el-table
+                        :data="tableData"
+                        stripe
+                        style="width: 80%" class="table">
+                        <el-table-column
+                          prop="date"
+                          label="日期"
+                          width="180">
+                        </el-table-column>
+                        <el-table-column
+                          prop="time"
+                          label="时间"
+                          width="180">
+                        </el-table-column>
+                        <el-table-column
+                          prop="user"
+                          label="用户"
+                          width="180">
+                        </el-table-column>
+                        <el-table-column
+                          prop="event"
+                          label="事件">
+                        </el-table-column>
+                      </el-table>
+                    </el-row>
+                  <el-pagination
+                    layout="prev, pager, next"
+                    :total="50"
+                  style="margin-top: 10px;">
+                  </el-pagination>
+                </el-card>
+            </el-col>
+        </el-row>
     </div>
 </template>
 
@@ -61,7 +101,33 @@ export default {
     return {
       temp: require('../../assets/temp.png'),
       smoke: require('../../assets/smoke.png'),
-      fire: require('../../assets/fire.png')
+      fire: require('../../assets/fire.png'),
+      tableData: [{
+        date: '2022-02-02',
+        time: '19:30:20',
+        user: '管理员',
+        event: '登录系统'
+      }, {
+        date: '2022-02-03',
+        time: '8:30:20',
+        user: '管理员',
+        event: '关闭报警'
+      }, {
+        date: '2022-02-03',
+        time: '10:30:20',
+        user: '管理员',
+        event: '新增普通账号test'
+      }, {
+        date: '2022-02-03',
+        time: '11:30:30',
+        user: 'test',
+        event: '登录系统'
+      }, {
+        date: '2022-02-03',
+        time: '13:30:00',
+        user: 'test',
+        event: '注销登录'
+      }]
     }
   },
   mounted () {
@@ -99,7 +165,7 @@ export default {
 </script>
 
 <style scoped>
-    .el-card {
+  .el-card {
         border-radius: 18px;
     }
     .card-title{
@@ -136,4 +202,10 @@ export default {
     margin:0 auto;
     margin-top: 50px;
 }
+  .table{
+    width: 80%;
+    margin-top: 25px;
+    margin-left: 30px;
+    margin-right: 30px;
+  }
 </style>
