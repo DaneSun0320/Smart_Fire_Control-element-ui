@@ -1,16 +1,15 @@
 <template>
     <div>
         <div class="card-welcome">Hello,</div>
-        <div class="card-welcome-user">DaneSun</div>
+        <div class="card-welcome-user">Admin</div>
     <el-row :gutter="40">
         <el-col :span="18">
             <el-card shadow="hover" style="height: 400px" >
                 <el-row type="flex"  justify="space-between">
                     <div class="card-title">数据图表</div>
                 </el-row>
-
-                <el-row type="flex" class="row-bg">
-                    <div id="c1" class="graph"></div>
+                <el-row type="flex" class="graph">
+                    <div id="c1"></div>
                 </el-row>
             </el-card>
         </el-col>
@@ -36,7 +35,8 @@
                         <div style="margin-top: 20px;font-size: 20px;">正常</div>
                     </el-col>
                 </el-row>
-            </el-card>    <el-card shadow="hover" class="card-data" >
+            </el-card>
+          <el-card shadow="hover" class="card-data" >
             <el-row :gutter="20" type="flex">
                 <el-col :span="8">
                     <img :src="fire" style="height: 70px;width: 70px;"/>
@@ -51,37 +51,37 @@
     </el-row>
         <el-row :gutter="40">
             <el-col :span="24">
-                <el-card shadow="hover" style="min-height: 400px" >
+                <el-card shadow="hover" style="min-height: 200px;" >
                     <el-row type="flex"  justify="space-between">
                         <div class="card-title">运行日志</div>
                         <el-button class="card-button" size="small" icon="el-icon-download" round>导出</el-button>
                     </el-row>
-                    <el-row type="flex">
-                      <el-table
-                        :data="tableData"
-                        stripe
-                        style="width: 80%" class="table">
-                        <el-table-column
-                          prop="date"
-                          label="日期"
-                          width="180">
-                        </el-table-column>
-                        <el-table-column
-                          prop="time"
-                          label="时间"
-                          width="180">
-                        </el-table-column>
-                        <el-table-column
-                          prop="user"
-                          label="用户"
-                          width="180">
-                        </el-table-column>
-                        <el-table-column
-                          prop="event"
-                          label="事件">
-                        </el-table-column>
-                      </el-table>
-                    </el-row>
+                  <el-row type="flex">
+                    <el-table
+                      :data="tableData"
+                      stripe
+                      style="width: 80%" class="table">
+                      <el-table-column
+                        prop="date"
+                        label="日期"
+                        width="180">
+                      </el-table-column>
+                      <el-table-column
+                        prop="time"
+                        label="时间"
+                        width="180">
+                      </el-table-column>
+                      <el-table-column
+                        prop="user"
+                        label="用户"
+                        width="180">
+                      </el-table-column>
+                      <el-table-column
+                        prop="event"
+                        label="事件">
+                      </el-table-column>
+                    </el-table>
+                  </el-row>
                   <el-pagination
                     layout="prev, pager, next"
                     :total="50"
@@ -90,6 +90,7 @@
                 </el-card>
             </el-col>
         </el-row>
+
     </div>
 </template>
 
@@ -198,12 +199,13 @@ export default {
         margin-bottom: 20px;
     }
 .graph{
-    width: 800px;
-    margin:0 auto;
+    display: flex;
+    width: 80%;
     margin-top: 50px;
+    margin-left: 20px;
+    margin-right: 20px;
 }
   .table{
-    width: 80%;
     margin-top: 25px;
     margin-left: 30px;
     margin-right: 30px;

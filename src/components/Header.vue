@@ -22,7 +22,7 @@ export default {
   name: 'Header',
   data () {
     return {
-      userAvatar: require('../assets/avatar.jpg')
+      userAvatar: require('../assets/avatar.png')
     }
   }
 }
