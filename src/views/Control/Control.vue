@@ -205,10 +205,4 @@ export default {
     height: 120px;
     margin-bottom: 20px;
   }
-  .card-title{
-    display: flex;
-    text-align: start;
-    margin-left: 10px;
-    align-items: center;
-  }
 </style>

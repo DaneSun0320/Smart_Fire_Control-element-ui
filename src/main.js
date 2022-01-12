@@ -27,6 +27,7 @@ import {
   Table,
   TableColumn,
   Switch,
+  InputNumber,
   Notification
 } from 'element-ui'
 Vue.prototype.Notification = Notification
@@ -54,6 +55,7 @@ Vue.use(Pagination)
 Vue.use(Table)
 Vue.use(TableColumn)
 Vue.use(Switch)
+Vue.use(InputNumber)
 new Vue({
   router,
   store,

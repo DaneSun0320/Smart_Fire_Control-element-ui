@@ -9,7 +9,7 @@
                     <div class="card-title">数据图表</div>
                 </el-row>
                 <el-row type="flex" class="graph">
-                    <div id="c1"></div>
+                  <lineChart  :charData="lineData" :id="'c1'"></lineChart>
                 </el-row>
             </el-card>
         </el-col>
@@ -95,9 +95,10 @@
 </template>
 
 <script>
-import * as G2 from '@antv/g2'
+import lineChart from '@/components/LineChart.vue'
 export default {
   name: 'OverView',
+  components: { lineChart },
   data () {
     return {
       temp: require('../../assets/temp.png'),
@@ -128,38 +129,14 @@ export default {
         time: '13:30:00',
         user: 'test',
         event: '注销登录'
-      }]
+      }],
+      lineData: [{ mzkId: 112, strftime: '2017-01-11', value: 9275501 }, // 测试数据，根据自己需求自己设置数据
+        { mzkId: 112, strftime: '2017-01-12', value: 9281904 },
+        { mzkId: 112, strftime: '2017-01-13', value: 9290777 },
+        { mzkId: 112, strftime: '2017-01-14', value: 9297913 },
+        { mzkId: 112, strftime: '2017-01-15', value: 9306918 },
+        { mzkId: 112, strftime: '2017-01-16', value: 9315641 }]
     }
-  },
-  mounted () {
-    const data = [
-      { genre: 'A', sold: 275 },
-      { genre: 'B', sold: 115 },
-      { genre: 'C', sold: 120 },
-      { genre: 'D', sold: 350 },
-      { genre: 'E', sold: 150 },
-      { genre: 'F', sold: 275 },
-      { genre: 'G', sold: 115 },
-      { genre: 'H', sold: 120 },
-      { genre: 'I', sold: 350 },
-      { genre: 'J', sold: 150 }
-    ]
-
-    // Step 1: 创建 Chart 对象
-    const chart = new G2.Chart({
-      container: 'c1', // 指定图表容器 ID
-      width: 800, // 指定图表宽度
-      height: 250 // 指定图表高度
-    })
-
-    // Step 2: 载入数据源
-    chart.data(data)
-
-    // Step 3：创建图形语法，绘制柱状图
-    chart.interval().position('genre*sold')
-
-    // Step 4: 渲染图表
-    chart.render()
   }
 }
 
