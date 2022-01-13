@@ -1,11 +1,11 @@
 <template>
     <el-aside style="width: 200px">
         <el-menu
-                default-active="/"
+                :default-active="$route.path"
                 class="el-menu-vertical-demo"
                 @open="handleOpen"
                 @close="handleClose"
-                :router='true'
+                router
         >
             <el-menu-item :index="item.path" v-for="item in menu" :key="item.path" >
                 <i :class="item.icon"></i>
@@ -65,12 +65,6 @@ export default {
     }
   },
   methods: {
-    openMenu () {
-      this.isCollapse = false
-    },
-    closeMenu () {
-      this.isCollapse = true
-    },
     handleOpen (key, keyPath) {
       console.log(key, keyPath)
     },

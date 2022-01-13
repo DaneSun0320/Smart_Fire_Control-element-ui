@@ -9,7 +9,7 @@
                     <div class="card-title">数据图表</div>
                 </el-row>
                 <el-row type="flex" class="graph">
-                  <lineChart  :charData="lineData" :id="'c1'"></lineChart>
+                  <lineCharts  :charData="lineData" :id="'c1'"></lineCharts>
                 </el-row>
             </el-card>
         </el-col>
@@ -95,10 +95,10 @@
 </template>
 
 <script>
-import lineChart from '@/components/LineChart.vue'
+import lineCharts from '@/components/lineCharts.vue'
 export default {
   name: 'OverView',
-  components: { lineChart },
+  components: { lineCharts },
   data () {
     return {
       temp: require('../../assets/temp.png'),
@@ -130,12 +130,61 @@ export default {
         user: 'test',
         event: '注销登录'
       }],
-      lineData: [{ mzkId: 112, strftime: '2017-01-11', value: 9275501 }, // 测试数据，根据自己需求自己设置数据
-        { mzkId: 112, strftime: '2017-01-12', value: 9281904 },
-        { mzkId: 112, strftime: '2017-01-13', value: 9290777 },
-        { mzkId: 112, strftime: '2017-01-14', value: 9297913 },
-        { mzkId: 112, strftime: '2017-01-15', value: 9306918 },
-        { mzkId: 112, strftime: '2017-01-16', value: 9315641 }]
+
+      lineData: [{
+        time: 164208606600,
+        value: 25.5
+      }, {
+        time: 164208607600,
+        value: 24.5
+      }, {
+        time: 164208608600,
+        value: 26.5
+      }, {
+        time: 164208609600,
+        value: 30.0
+      }, {
+        time: 164208610600,
+        value: 25.0
+      }, {
+        time: 164208611600,
+        value: 27.0
+      }, {
+        time: 164208612600,
+        value: 28.0
+      }, {
+        time: 164208613600,
+        value: 30.0
+      },
+      {
+        time: 164208614600,
+        value: 30.0
+      },
+      {
+        time: 164208615600,
+        value: 30.0
+      },
+      {
+        time: 164208616600,
+        value: 30.0
+      },
+      {
+        time: 164208617600,
+        value: 30.0
+      },
+      {
+        time: 164208618600,
+        value: 30.0
+      },
+      {
+        time: 164208619600,
+        value: 30.0
+      },
+      {
+        time: 164208620600,
+        value: 30.0
+      }
+      ]
     }
   }
 }
@@ -176,11 +225,10 @@ export default {
         margin-bottom: 20px;
     }
 .graph{
-    display: flex;
-    width: 80%;
-    margin-top: 50px;
-    margin-left: 20px;
-    margin-right: 20px;
+  display: flex;
+}
+canvas{
+  height: 120%;
 }
   .table{
     margin-top: 25px;
