@@ -1,5 +1,6 @@
 <template>
   <el-container style="height:100%">
+    <UserInfo></UserInfo>
     <el-header>
       <Header></Header>
     </el-header>
@@ -26,8 +27,9 @@
 <script>
 import Aside from '@/components/Aside.vue'
 import Header from '@/components/Header.vue'
+import UserInfo from '@/components/UserInfo'
 export default {
   name: 'Main',
-  components: { Header, Aside }
+  components: { Header, Aside, UserInfo }
 }
 </script>

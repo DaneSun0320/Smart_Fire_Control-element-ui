@@ -28,6 +28,11 @@ import {
   TableColumn,
   Switch,
   InputNumber,
+  Input,
+  Dialog,
+  Upload,
+  Form,
+  FormItem,
   Notification
 } from 'element-ui'
 Vue.prototype.Notification = Notification
@@ -56,6 +61,11 @@ Vue.use(Table)
 Vue.use(TableColumn)
 Vue.use(Switch)
 Vue.use(InputNumber)
+Vue.use(Input)
+Vue.use(Dialog)
+Vue.use(Upload)
+Vue.use(Form)
+Vue.use(FormItem)
 new Vue({
   router,
   store,

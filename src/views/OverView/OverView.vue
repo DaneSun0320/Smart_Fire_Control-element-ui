@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="card-welcome">Hello,</div>
-        <div class="card-welcome-user">Admin</div>
+        <div class="card-welcome-user">{{this.$store.state.userNickName}}</div>
     <el-row :gutter="40">
         <el-col :span="18">
             <el-card shadow="hover" style="height: 400px" >
