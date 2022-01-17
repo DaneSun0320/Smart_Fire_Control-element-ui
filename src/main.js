@@ -4,6 +4,9 @@ import './registerServiceWorker'
 import router from './router'
 import store from './store'
 import Viser from 'viser-vue'
+import axios from 'axios'
+import md5 from 'js-md5'
+import qs from 'qs'
 import {
   Button,
   Container,
@@ -33,9 +36,26 @@ import {
   Upload,
   Form,
   FormItem,
+  Message,
   Notification
 } from 'element-ui'
+
+axios.defaults.timeout = 3000
+axios.defaults.baseURL = 'http://127.0.0.1:8081' // 本地端口和地址
+axios.defaults.headers.Authorization = window.localStorage.getItem('token')
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
+
+// 引入MD5
+Vue.prototype.$md5 = md5
+// 引入axios
+Vue.prototype.$axios = axios
+// 引入Notification
 Vue.prototype.Notification = Notification
+// 引入Message
+Vue.prototype.$message = Message
+// 引入qs
+Vue.prototype.$qs = qs
+
 Vue.config.productionTip = false
 Vue.use(Viser)
 Vue.use(Button)

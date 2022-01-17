@@ -36,10 +36,41 @@ export default {
   },
   methods: {
     submit: function () {
+      // 设置按钮加载状态
       this.submitLoad = true
-      setTimeout(() => {
-        this.submitLoad = false
-      }, 1000)
+      var that = this
+      // 构造post数据
+      var data = {
+        id: this.form.username,
+        password: this.$md5(this.form.password)
+      }
+      this.$axios.post('/login', this.$qs.stringify(data))
+        .then(function (response) {
+          const status = response.data.status
+          switch (status) {
+            // 登录成功
+            case 1:
+              // status=1 登陆成功
+              localStorage.setItem('token', response.data.token) // 缓存token
+              var referrer = sessionStorage.getItem('referrer') // 获取跳转路径
+              if (referrer != null) {
+                that.$router.push(referrer)
+              } else {
+                that.$router.push('/')
+              }
+              break
+            case -1:
+              // status=-1 用户不存在
+              that.$message.error('用户不存在！')
+              break
+            case -2:
+              // status=-2 用户密码错误
+              that.$message.error('密码错误！')
+              break
+          }
+          // 按钮取消按钮加载状态
+          that.submitLoad = false
+        })
     }
   }
 }
