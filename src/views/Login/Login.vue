@@ -51,7 +51,16 @@ export default {
             // 登录成功
             case 1:
               // status=1 登陆成功
-              localStorage.setItem('token', response.data.token) // 缓存token
+              that.$store.state.token = response.data.data.token
+              localStorage.setItem('token', response.data.data.token) // 缓存token
+              localStorage.setItem('id', response.data.data.info.id)
+              localStorage.setItem('avatar', response.data.data.info.avatar)
+              localStorage.setItem('email', response.data.data.info.email)
+              localStorage.setItem('level', response.data.data.info.level)
+              that.$store.state.userNickName = response.data.data.info.id
+              that.$store.state.userAvatar = response.data.data.info.avatar
+              that.$store.state.email = response.data.data.info.email
+              that.$store.state.level = response.data.data.info.level
               var referrer = sessionStorage.getItem('referrer') // 获取跳转路径
               if (referrer != null) {
                 that.$router.push(referrer)
@@ -59,13 +68,9 @@ export default {
                 that.$router.push('/')
               }
               break
-            case -1:
+            case 0:
               // status=-1 用户不存在
-              that.$message.error('用户不存在！')
-              break
-            case -2:
-              // status=-2 用户密码错误
-              that.$message.error('密码错误！')
+              that.$message.error('用户名或密码错误！')
               break
           }
           // 按钮取消按钮加载状态

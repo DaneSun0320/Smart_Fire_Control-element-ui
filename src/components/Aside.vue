@@ -7,7 +7,7 @@
                 @close="handleClose"
                 router
         >
-            <el-menu-item :index="item.path" v-for="item in menu" :key="item.path" >
+            <el-menu-item :index="item.path" v-for="item in menu" :key="item.path">
                 <i :class="item.icon"></i>
                 <span slot="title">{{item.label}}</span>
             </el-menu-item>

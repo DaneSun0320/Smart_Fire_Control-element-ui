@@ -7,7 +7,16 @@
   </div>
 </template>
 <script>
-
+export default {
+  created () {
+    if (window.localStorage.getItem('id')) {
+      this.$store.state.userNickName = window.localStorage.getItem('id')
+      this.$store.state.userAvatar = window.localStorage.getItem('avatar')
+      this.$store.state.email = window.localStorage.getItem('email')
+      this.$store.state.level = window.localStorage.getItem('level')
+    }
+  }
+}
 </script>
 <style lang="scss">
   .wraper {

@@ -50,11 +50,10 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
-
 axios.defaults.timeout = 3000
 axios.defaults.baseURL = 'http://127.0.0.1:8081' // 本地端口和地址
 axios.defaults.headers.Authorization = window.localStorage.getItem('token')
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
 
 /**
  * 设置路由守卫，拦截未登录请求

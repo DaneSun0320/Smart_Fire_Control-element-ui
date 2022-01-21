@@ -6,9 +6,11 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     userInfoDialog: false, // 用户个人中心控制
-    userNickName: '管理员',
+    userNickName: '',
     userAvatar: require('@/assets/avatar.png'), // 用户头像
-    email: 'example@xxx.com'
+    email: 'example@xxx.com',
+    level: 1,
+    token: window.localStorage.getItem('token')
   },
   getters: {
     getUserInfoDialog (state) {

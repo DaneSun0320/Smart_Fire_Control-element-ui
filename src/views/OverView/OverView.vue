@@ -58,21 +58,17 @@
                     </el-row>
                   <el-row type="flex">
                     <el-table
-                      :data="tableData"
+                      :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
                       stripe
                       style="width: 80%" class="table">
                       <el-table-column
-                        prop="date"
-                        label="日期"
-                        width="180">
-                      </el-table-column>
-                      <el-table-column
-                        prop="time"
+                        prop="createTime"
+                        :formatter="formatDate"
                         label="时间"
-                        width="180">
+                        width="360">
                       </el-table-column>
                       <el-table-column
-                        prop="user"
+                        prop="operator"
                         label="用户"
                         width="180">
                       </el-table-column>
@@ -83,8 +79,13 @@
                     </el-table>
                   </el-row>
                   <el-pagination
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="currentPage"
+                    :page-sizes="[1, 2, 5, 50]"
+                    :page-size="pageSize"
                     layout="prev, pager, next"
-                    :total="50"
+                    :total="parseInt(total)"
                   style="margin-top: 10px;">
                   </el-pagination>
                 </el-card>
@@ -96,6 +97,7 @@
 
 <script>
 import lineCharts from '@/components/lineCharts.vue'
+import moment from 'moment'
 export default {
   name: 'OverView',
   components: { lineCharts },
@@ -104,33 +106,10 @@ export default {
       temp: require('../../assets/temp.png'),
       smoke: require('../../assets/smoke.png'),
       fire: require('../../assets/fire.png'),
-      tableData: [{
-        date: '2022-02-02',
-        time: '19:30:20',
-        user: '管理员',
-        event: '登录系统'
-      }, {
-        date: '2022-02-03',
-        time: '8:30:20',
-        user: '管理员',
-        event: '关闭报警'
-      }, {
-        date: '2022-02-03',
-        time: '10:30:20',
-        user: '管理员',
-        event: '新增普通账号test'
-      }, {
-        date: '2022-02-03',
-        time: '11:30:30',
-        user: 'test',
-        event: '登录系统'
-      }, {
-        date: '2022-02-03',
-        time: '13:30:00',
-        user: 'test',
-        event: '注销登录'
-      }],
-
+      currentPage: 1,
+      pageSize: 10,
+      total: 0,
+      tableData: [],
       lineData: [{
         time: 164208606600,
         value: 25.5
@@ -186,6 +165,58 @@ export default {
       }
       ]
     }
+  },
+  methods: {
+    getTableData: function () {
+      var that = this
+      this.$axios.get('/runtimelog', {
+        headers: {
+          Authorization: that.$store.state.token
+        }
+      })
+        .then(function (response) {
+          // 判断服务器返回状态码
+          var status = response.data.status
+          if (status) {
+            that.total = response.data.data.length
+            that.tableData = response.data.data
+          }
+        })
+    },
+    formatDate (row, column) {
+      var date = row[column.property]
+
+      if (date === undefined) { return '' };
+
+      return moment(date).format('YYYY-MM-DD HH:mm:ss')
+    },
+    timer: function () {
+      return setTimeout(() => {
+        this.getTableData()
+      }, 60000)
+    },
+    handleSizeChange (newSize) {
+      // pagesize改变触发
+      this.pageSize = newSize
+    },
+    handleCurrentChange (newPage) {
+      // 页码改变触发
+      this.currentPage = newPage
+    }
+  },
+  watch: {
+    tableData () {
+      this.timer()
+    }
+  },
+  mounted: function () {
+    this.$nextTick(function () {
+      this.getTableData()
+    })
+  },
+  destroyed () {
+    // 页面销毁时清除数据请求定时器
+    clearTimeout(this.timer)
   }
 }
 

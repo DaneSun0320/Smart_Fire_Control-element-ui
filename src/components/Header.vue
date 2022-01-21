@@ -31,7 +31,10 @@ export default {
       if (command === 'userInfo') {
         this.$store.commit('showUserInfoDialog')
       } else {
-        console.log('退出登录')
+        window.localStorage.clear()
+        window.sessionStorage.clear()
+        this.$store.state.token = null
+        this.$router.push('/login')
       }
     }
   }
