@@ -5,7 +5,7 @@
         <el-row type="flex"  justify="space-between">
           <div class="card-title">用户管理</div>
         </el-row>
-        <div class="table" v-if="this.$store.state.level === 0">
+        <div class="table" v-if="level === 0">
           <el-table
             :data="tableData.filter(data => !search || data.id.toLowerCase().includes(search.toLowerCase())).slice((currentPage-1)*pageSize,currentPage*pageSize)"
             stripe
@@ -72,6 +72,7 @@ export default {
   name: 'User',
   data () {
     return {
+      level: this.$store.state.level,
       tableData: [],
       search: '',
       currentPage: 1,
@@ -130,6 +131,7 @@ export default {
   },
   mounted: function () {
     this.$nextTick(function () {
+      this.level = parseInt(this.$store.state.level)
       this.getTableData()
     })
   }

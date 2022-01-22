@@ -9,7 +9,7 @@ export default new Vuex.Store({
     userNickName: '',
     userAvatar: require('@/assets/avatar.png'), // 用户头像
     email: 'example@xxx.com',
-    level: 1,
+    level: parseInt(window.localStorage.getItem('level')),
     token: window.localStorage.getItem('token')
   },
   getters: {
