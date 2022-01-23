@@ -5,6 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    userDetailDialog: false,
     userInfoDialog: false, // 用户个人中心控制
     userNickName: '',
     userAvatar: require('@/assets/avatar.png'), // 用户头像

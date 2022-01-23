@@ -1,9 +1,12 @@
 <template>
+  <div>
+  <UserDialog :userData="showdata"></UserDialog>
   <el-row :gutter="40" >
     <el-col :span="24">
       <el-card shadow="hover" style="min-height: 400px" >
         <el-row type="flex"  justify="space-between">
           <div class="card-title">用户管理</div>
+          <el-button class="card-button" size="small" icon="el-icon-plus" :disabled="level === 0" @click="addUser" round>新增用户</el-button>
         </el-row>
         <div class="table" v-if="level === 0">
           <el-table
@@ -41,6 +44,7 @@
                 <el-button
                   size="mini"
                   type="danger"
+                  :disabled="tableData[scope.$index].level === 0"
                   @click="handleDelete(scope.$index, scope.row)">删除</el-button>
               </template>
             </el-table-column>
@@ -59,28 +63,66 @@
         <div v-else>
           <el-empty :image-size="400" :image="require('../../assets/unauthorize.png')" description="无权限"></el-empty>
         </div>
-
       </el-card>
     </el-col>
     </el-row>
+  </div>
 </template>
 
 <script>
 import moment from 'moment'
-
+import UserDialog from '@/components/UserDialog.vue'
 export default {
   name: 'User',
+  components: { UserDialog },
   data () {
     return {
+      dialogVisible: false,
       level: this.$store.state.level,
       tableData: [],
       search: '',
       currentPage: 1,
       pageSize: 10,
-      total: 0
+      total: 0,
+      showdata: {},
+      newUser: {}
     }
   },
   methods: {
+    handleClose: function () {
+      this.dialogVisible = false
+      this.newUser = {}
+    },
+    addUser: function () {
+      var that = this
+      this.$axios.get('/adduser', {
+        headers: {
+          Authorization: that.$store.state.token
+        }
+      })
+        .then(function (response) {
+          // 判断服务器返回状态码
+          var status = response.data.status
+          if (status) {
+            that.dialogVisible = true
+            that.newUser = response.data.data
+            that.getTableData()
+            that.Notification({
+              title: '新用户信息只显示一次',
+              dangerouslyUseHTMLString: true,
+              message: '<strong>用户名:</strong>' + response.data.data.id + '<br/>' + '<strong>密码:</strong>' + response.data.data.password + '<br/>',
+              type: 'success',
+              duration: 0
+            })
+          } else {
+            that.Notification({
+              title: '添加失败',
+              message: '请稍后再试！',
+              type: 'error'
+            })
+          }
+        })
+    },
     getTableData: function () {
       var that = this
       this.$axios.get('/userlist', {
@@ -100,14 +142,14 @@ export default {
     formatDate (row, column) {
       var date = row[column.property]
 
-      if (date === undefined) { return '' };
+      if (date === undefined || date === null || date === '') { return '从未登录' };
 
       return moment(date).format('YYYY-MM-DD HH:mm:ss')
     },
     parseLevel: function (row, column) {
       var level = row[column.property]
 
-      if (level === undefined) { return '' };
+      if (level === undefined) { return '' }
 
       return level === 0 ? '超级管理员' : '管理员'
     },
@@ -120,10 +162,37 @@ export default {
       this.currentPage = newPage
     },
     handleEdit (index, row) {
-      console.log(index, row)
+      this.showdata = this.tableData[index]
+      this.$store.state.userDetailDialog = true
     },
     handleDelete (index, row) {
-      console.log(index, row)
+      var that = this
+      var data = {
+        id: this.tableData[index].id
+      }
+      this.$axios.post('/deleteuser', this.$qs.stringify(data), {
+        headers: {
+          Authorization: that.$store.state.token
+        }
+      })
+        .then(function (response) {
+          // 判断服务器返回状态码
+          var status = response.data.status
+          if (status) {
+            that.getTableData()
+            that.Notification({
+              title: '提示',
+              message: '删除成功！',
+              type: 'success'
+            })
+          } else {
+            that.Notification({
+              title: '删除失败',
+              message: '请稍后再试！',
+              type: 'error'
+            })
+          }
+        })
     },
     getChange (e) {
       console.log(e)
