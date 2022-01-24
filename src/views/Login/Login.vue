@@ -19,6 +19,7 @@
   </div>
 </template>
 <script type="text/javascript">
+
 export default {
   name: 'Login',
   data () {
@@ -36,9 +37,12 @@ export default {
   },
   methods: {
     submit: function () {
+      var that = this
       // 设置按钮加载状态
       this.submitLoad = true
-      var that = this
+      setTimeout(function () {
+        that.submitLoad = false
+      }, 3000)
       // 构造post数据
       var data = {
         id: this.form.username,
@@ -51,12 +55,12 @@ export default {
             // 登录成功
             case 1:
               // status=1 登陆成功
-              that.$store.state.token = response.data.data.token
               localStorage.setItem('token', response.data.data.token) // 缓存token
               localStorage.setItem('id', response.data.data.info.id)
               localStorage.setItem('avatar', response.data.data.info.avatar)
               localStorage.setItem('email', response.data.data.info.email)
               localStorage.setItem('level', response.data.data.info.level)
+              that.$store.state.token = response.data.data.token
               that.$store.state.userNickName = response.data.data.info.id
               that.$store.state.userAvatar = response.data.data.info.avatar
               that.$store.state.email = response.data.data.info.email

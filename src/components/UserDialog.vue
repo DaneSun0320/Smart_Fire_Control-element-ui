@@ -3,7 +3,7 @@
   <el-dialog title="详细信息" :visible.sync="this.$store.state.userDetailDialog" :before-close="handleClose">
     <el-row :gutter="20">
       <el-col :span="24">
-          <img :src="thisUserData.avatar" class="avatar">
+          <img :src="thisUserData.avatar === null ? require('../assets/avatar.png') : thisUserData.avatar" class="avatar">
         <div class="nickName">{{thisUserData.id}}</div>
       </el-col>
     </el-row>

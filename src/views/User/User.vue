@@ -6,7 +6,7 @@
       <el-card shadow="hover" style="min-height: 400px" >
         <el-row type="flex"  justify="space-between">
           <div class="card-title">用户管理</div>
-          <el-button class="card-button" size="small" icon="el-icon-plus" :disabled="level === 0" @click="addUser" round>新增用户</el-button>
+          <el-button class="card-button" size="small" icon="el-icon-plus" :disabled="level" @click="addUser" round>新增用户</el-button>
         </el-row>
         <div class="table" v-if="level === 0">
           <el-table

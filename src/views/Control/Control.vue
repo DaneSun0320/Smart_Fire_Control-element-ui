@@ -78,6 +78,7 @@
         <el-row type="flex">
           <el-table
             :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+            :default-sort = "{prop: 'createTime', order: 'descending'}"
             stripe
             style="width: 80%" class="table">
             <el-table-column
@@ -174,7 +175,11 @@ export default {
     },
     electricControl: function (event) {
       var that = this
-      this.$axios.get(event ? '/electricon' : '/electricoff')
+      this.$axios.get(event ? '/electricon' : '/electricoff', {
+        headers: {
+          Authorization: that.$store.state.token
+        }
+      })
         .then(function (response) {
           if (response.data.status === 1) {
             that.electricChange(event)
@@ -189,7 +194,11 @@ export default {
     },
     alertControl: function (event) {
       var that = this
-      this.$axios.get(event ? '/alerton' : '/alertoff')
+      this.$axios.get(event ? '/alerton' : '/alertoff', {
+        headers: {
+          Authorization: that.$store.state.token
+        }
+      })
         .then(function (response) {
           if (response.data.status === 1) {
             that.alertChange(event)
@@ -204,7 +213,11 @@ export default {
     },
     fireControl: function (event) {
       var that = this
-      this.$axios.get(event ? '/sparyon' : 'sparyoff')
+      this.$axios.get(event ? '/sparyon' : 'sparyoff', {
+        headers: {
+          Authorization: that.$store.state.token
+        }
+      })
         .then(function (response) {
           if (response.data.status === 1) {
             that.fireChange(event)
@@ -289,7 +302,8 @@ export default {
     timer: function () {
       return setTimeout(() => {
         this.getTableData()
-      }, 60000)
+        this.getDeviceStatus()
+      }, 3000)
     },
     handleSizeChange (newSize) {
       // pagesize改变触发

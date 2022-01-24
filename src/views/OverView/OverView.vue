@@ -59,6 +59,7 @@
                   <el-row type="flex">
                     <el-table
                       :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+                      :default-sort = "{prop: 'createTime'}"
                       stripe
                       style="width: 80%" class="table">
                       <el-table-column

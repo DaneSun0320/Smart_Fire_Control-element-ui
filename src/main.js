@@ -37,6 +37,7 @@ import {
   Form,
   FormItem,
   Empty,
+  Slider,
   Message,
   Notification
 } from 'element-ui'
@@ -83,6 +84,7 @@ Vue.use(Upload)
 Vue.use(Form)
 Vue.use(FormItem)
 Vue.use(Empty)
+Vue.use(Slider)
 new Vue({
   router,
   store,
@@ -97,6 +99,8 @@ axios.defaults.timeout = 3000
 axios.defaults.baseURL = 'http://127.0.0.1:8081' // 本地端口和地址
 axios.defaults.headers.Authorization = window.localStorage.getItem('token')
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
+axios.defaults.retry = 4
+axios.defaults.retryDelay = 1000
 
 /**
  * axios拦截器配置
@@ -117,11 +121,17 @@ axios.interceptors.response.use(
   // 然后根据返回的状态码进行一些操作，例如登录过期提示，错误提示等等
   // 下面列举几个常见的操作，其他需求可自行扩展
   error => {
+    if (error && error.stack.indexOf('timeout') > -1) { Message.error('请求超时，请检查服务程序状态！') }
     if (error.response.status === 401) {
       console.log('拦截器捕获401')
       Message.error('登录过期，请重新登录！')
+      window.localStorage.clear()
       // 跳转至登录页面
       router.push('/login')
+    } else if (error.response.status === 404) {
+      Message.error('数据接口错误！')
+    } else if (error.response.status === 500) {
+      Message.error('服务程序未启动！')
     }
   }
 )
