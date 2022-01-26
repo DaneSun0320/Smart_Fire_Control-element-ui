@@ -22,20 +22,21 @@ export default {
     },
     id: String
   },
-  // 如果使用serverData传过来的静态数据 请使用mounted()方法 并注释掉watch
+  /*  // 如果使用serverData传过来的静态数据 请使用mounted()方法 并注释掉watch
   mounted () {
     this.drawChart()
-  },
+  }, */
   // 监听API接口传过来的数据 使用watch
-  // watch: {
-  // charData: function (val, oldVal) {    // 监听charData，当发生变化时，触发这个回调函数绘制图表
-  // console.log('new: %s, old: %s', val, oldVal);
-  // this.drawChart(val);
-  // }
+  watch: {
+    charData: function (val, oldVal) {
+      console.log(val)
+      console.log(oldVal)
+      console.log(this.chart)
+      this.chart.changeData(val)
+    }
+  },
   methods: {
     drawChart () {
-      // 2019.03.30 更新 destory方法已被废弃
-      // this.chart && this.chart.destory()
       this.chart = new G2.Chart({
         container: this.id,
         padding: 20,
@@ -46,6 +47,7 @@ export default {
       this.chart.scale('value', {
         type: 'linear',
         alias: '温度',
+        min: 10,
         nice: true
       })
       this.chart.scale('time', {
@@ -65,6 +67,11 @@ export default {
       })
       this.chart.render()
     }
+  },
+  mounted: function () {
+    this.$nextTick(function () {
+      this.drawChart()
+    })
   }
 }
 </script>

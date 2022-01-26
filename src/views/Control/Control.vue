@@ -140,23 +140,6 @@ export default {
     }
   },
   methods: {
-    getDeviceStatus: function () {
-      var that = this
-      this.$axios.get('/devicestatus', {
-        headers: {
-          Authorization: that.$store.state.token
-        }
-      })
-        .then(function (response) {
-          // 判断服务器返回状态码
-          var status = response.data.status
-          if (status) {
-            that.alertSwitch = JSON.parse(response.data.data).alert
-            that.fireControlSwitch = JSON.parse(response.data.data).spary
-            that.electricControlSwitch = JSON.parse(response.data.data).electric
-          }
-        })
-    },
     getTableData: function () {
       var that = this
       this.$axios.get('/controllog', {
@@ -300,10 +283,10 @@ export default {
       return moment(date).format('YYYY-MM-DD HH:mm:ss')
     },
     timer: function () {
-      return setTimeout(() => {
+      return setInterval(() => {
         this.getTableData()
         this.getDeviceStatus()
-      }, 3000)
+      }, 60000)
     },
     handleSizeChange (newSize) {
       // pagesize改变触发
@@ -314,20 +297,16 @@ export default {
       this.currentPage = newPage
     }
   },
-  watch: {
-    tableData () {
-      this.timer()
-    }
-  },
   mounted: function () {
+    var that = this
     this.$nextTick(function () {
-      this.getTableData()
-      this.getDeviceStatus()
+      that.timer()
     })
   },
   destroyed () {
     // 页面销毁时清除数据请求定时器
     clearTimeout(this.timer)
+    console.log('清除定时器')
   }
 }
 

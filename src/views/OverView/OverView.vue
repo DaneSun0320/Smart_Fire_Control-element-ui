@@ -21,7 +21,7 @@
                     </el-col>
                     <el-col :span="16" >
                         <div style="font-size: 14px;color: #6b8196;">实时温度</div>
-                        <div style="margin-top: 20px;font-size: 20px;">25℃</div>
+                        <div style="margin-top: 20px;font-size: 20px;">{{temptureData == null ? '未获取到数据' : temptureData + '℃'}}</div>
                     </el-col>
                 </el-row>
             </el-card>
@@ -32,7 +32,7 @@
                     </el-col>
                     <el-col :span="16" >
                         <div style="font-size: 14px;color: #6b8196;">烟雾监控</div>
-                        <div style="margin-top: 20px;font-size: 20px;">正常</div>
+                        <div style="margin-top: 20px;font-size: 20px;">{{smokeData == null ? '未获取到数据' : smokeDataShow}}</div>
                     </el-col>
                 </el-row>
             </el-card>
@@ -43,7 +43,7 @@
                 </el-col>
                 <el-col :span="16" >
                     <div style="font-size: 14px;color: #6b8196;">火焰监控</div>
-                    <div style="margin-top: 20px;font-size: 20px;">正常</div>
+                    <div style="margin-top: 20px;font-size: 20px;">{{fireData == null ? '未获取到数据' : fireDataShow}}</div>
                 </el-col>
             </el-row>
         </el-card>
@@ -111,64 +111,14 @@ export default {
       pageSize: 10,
       total: 0,
       tableData: [],
-      lineData: [{
-        time: 164208606600,
-        value: 25.5
-      }, {
-        time: 164208607600,
-        value: 24.5
-      }, {
-        time: 164208608600,
-        value: 26.5
-      }, {
-        time: 164208609600,
-        value: 30.0
-      }, {
-        time: 164208610600,
-        value: 25.0
-      }, {
-        time: 164208611600,
-        value: 27.0
-      }, {
-        time: 164208612600,
-        value: 28.0
-      }, {
-        time: 164208613600,
-        value: 30.0
-      },
-      {
-        time: 164208614600,
-        value: 30.0
-      },
-      {
-        time: 164208615600,
-        value: 30.0
-      },
-      {
-        time: 164208616600,
-        value: 30.0
-      },
-      {
-        time: 164208617600,
-        value: 30.0
-      },
-      {
-        time: 164208618600,
-        value: 30.0
-      },
-      {
-        time: 164208619600,
-        value: 30.0
-      },
-      {
-        time: 164208620600,
-        value: 30.0
-      }
-      ]
+      temptureData: null,
+      fireData: null,
+      smokeData: null,
+      lineData: []
     }
   },
   methods: {
-    getTableData: function () {
+    getData: function () {
       var that = this
       this.$axios.get('/runtimelog', {
         headers: {
@@ -183,6 +133,27 @@ export default {
             that.tableData = response.data.data
           }
         })
+      this.$axios.get('/device', {
+        headers: {
+          Authorization: that.$store.state.token
+        }
+      })
+        .then(function (response) {
+          // 判断服务器返回状态码
+          var status = response.data.status
+          if (status === 1 && JSON.parse(response.data.data) !== null) {
+            that.temptureData = JSON.parse(response.data.data).tempture
+            that.fireData = JSON.parse(response.data.data).fire
+            that.smokeData = JSON.parse(response.data.data).smoke
+          }
+        })
+    },
+    updateChartData: function () {
+      var that = this
+      this.$store.state.chartData.push({
+        time: Date.parse(new Date()),
+        value: that.tempture
+      })
     },
     formatDate (row, column) {
       var date = row[column.property]
@@ -193,7 +164,16 @@ export default {
     },
     timer: function () {
       return setTimeout(() => {
-        this.getTableData()
+        this.getData()
+      }, 2000)
+    },
+    drawLineTimer: function () {
+      return setTimeout(() => {
+        this.updateChartData()
+        if (this.lineData.length > 60) {
+          this.$store.state.chartData.pop()
+        }
+        this.lineData = this.$store.state.chartData
       }, 60000)
     },
     handleSizeChange (newSize) {
@@ -208,16 +188,29 @@ export default {
   watch: {
     tableData () {
       this.timer()
+    },
+    lineData () {
+      this.drawLineTimer()
+    }
+  },
+  computed: {
+    fireDataShow: function () {
+      return this.fire > 650 ? '异常' : '正常'
+    },
+    smokeDataShow: function () {
+      return this.smoke > 650 ? '异常' : '正常'
     }
   },
   mounted: function () {
     this.$nextTick(function () {
-      this.getTableData()
+      this.getData()
+      this.updateChartData()
     })
   },
   destroyed () {
     // 页面销毁时清除数据请求定时器
     clearTimeout(this.timer)
+    clearTimeout(this.drawLineTimer)
   }
 }
 

@@ -5,14 +5,26 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    chartData: [],
     userDetailDialog: false,
     userInfoDialog: false, // 用户个人中心控制
     userNickName: '',
     userAvatar: require('@/assets/avatar.png'), // 用户头像
     email: 'example@xxx.com',
     level: parseInt(window.localStorage.getItem('level')),
-    token: window.localStorage.getItem('token')
+    token: window.localStorage.getItem('token'),
+    data: {
+      tempture: null,
+      fire: null,
+      smoke: null
+    },
+    control: {
+      electric: true,
+      alert: false,
+      spary: false
+    }
   },
+
   getters: {
     getUserInfoDialog (state) {
       return state.userInfoDialog
