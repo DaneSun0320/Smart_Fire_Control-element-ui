@@ -97,10 +97,11 @@ export default {
           // 判断服务器返回状态码
           var status = response.data.status
           if (status) {
-            that.alert = JSON.parse(response.data.data).alert
-            that.spary = JSON.parse(response.data.data).spary
-            that.electric = JSON.parse(response.data.data).electric
-            that.sensitivity = JSON.parse(response.data.data).level === 0 ? 0 : JSON.parse(response.data.data).level === 1 ? 50 : 100
+            console.log(response.data)
+            that.alert = response.data.data.alert
+            that.spary = response.data.data.spary
+            that.electric = response.data.data.electric
+            that.sensitivity = response.data.data.level === 0 ? 0 : response.data.data.level === 1 ? 50 : 100
           } else {
             that.$message.error('与设备连接出现错误，请检查设备连接！')
             clearTimeout(that.timer)
@@ -128,7 +129,14 @@ export default {
       })
         .then(function (response) {
           if (response.data.status === 1) {
-            that.$message.success('设置成功！')
+            that.Notification({
+              title: '提示',
+              message: '设置成功',
+              showClose: false,
+              type: 'success',
+              position: 'top-right',
+              duration: 1000
+            })
             return null
           }
         })

@@ -7,6 +7,7 @@ import Viser from 'viser-vue'
 import axios from 'axios'
 import md5 from 'js-md5'
 import qs from 'qs'
+
 import {
   Button,
   Container,
@@ -38,6 +39,7 @@ import {
   FormItem,
   Empty,
   Slider,
+  MessageBox,
   Message,
   Notification
 } from 'element-ui'
@@ -50,6 +52,8 @@ Vue.prototype.$axios = axios
 Vue.prototype.Notification = Notification
 // 引入Message
 Vue.prototype.$message = Message
+// 引入MessageBox
+Vue.prototype.$messageBox = MessageBox
 // 引入qs
 Vue.prototype.$qs = qs
 

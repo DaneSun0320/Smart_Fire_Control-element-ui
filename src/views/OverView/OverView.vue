@@ -9,7 +9,8 @@
                     <div class="card-title">数据图表</div>
                 </el-row>
                 <el-row type="flex" class="graph">
-                  <lineCharts  :charData="lineData" :id="'c1'"></lineCharts>
+                  <img v-if="lineData.length === 0" style="width: 350px;height: 350px;margin: auto;" :src="require('/src/assets/nodata.png')">
+                  <lineCharts v-if="lineData.length > 0"  :charData="lineData" :id="'c1'"></lineCharts>
                 </el-row>
             </el-card>
         </el-col>
@@ -54,7 +55,7 @@
                 <el-card shadow="hover" style="min-height: 200px;" >
                     <el-row type="flex"  justify="space-between">
                         <div class="card-title">运行日志</div>
-                        <el-button class="card-button" size="small" icon="el-icon-download" round>导出</el-button>
+                        <el-button class="card-button" size="small" icon="el-icon-download" @click="exportData" round>导出</el-button>
                     </el-row>
                   <el-row type="flex">
                     <el-table
@@ -99,6 +100,7 @@
 <script>
 import lineCharts from '@/components/lineCharts.vue'
 import moment from 'moment'
+
 export default {
   name: 'OverView',
   components: { lineCharts },
@@ -147,6 +149,22 @@ export default {
             that.smokeData = JSON.parse(response.data.data).smoke
           }
         })
+    },
+    exportData: function () {
+      require.ensure([], () => {
+        // eslint-disable-next-line camelcase
+        const { export_json_to_excel } = require('../../vendor/Export2Excel.js')
+        const tHeader = ['时间', '用户', '事件']
+        // 上面设置Excel的表格第一行的标题
+        const filterVal = ['createTime', 'operator', 'event']
+        // 上面的index、nickName、name是tableData里对象的属性
+        const list = this.tableData // 把data里的tableData存到list
+        const data = this.formatJson(filterVal, list)
+        export_json_to_excel(tHeader, data, '智慧消防系统-系统日志')
+      })
+    },
+    formatJson (filterVal, jsonData) {
+      return jsonData.map(v => filterVal.map(j => v[j]))
     },
     updateChartData: function () {
       var that = this

@@ -73,7 +73,7 @@
       <el-card shadow="hover" style="min-height: 200px;" >
         <el-row type="flex"  justify="space-between">
           <div class="card-title">控制记录</div>
-          <el-button class="card-button" size="small" icon="el-icon-download" round>导出</el-button>
+          <el-button class="card-button" size="small" icon="el-icon-download" @click="exportData" round>导出</el-button>
         </el-row>
         <el-row type="flex">
           <el-table
@@ -140,6 +140,39 @@ export default {
     }
   },
   methods: {
+    exportData: function () {
+      require.ensure([], () => {
+        // eslint-disable-next-line camelcase
+        const { export_json_to_excel } = require('../../vendor/Export2Excel.js')
+        const tHeader = ['时间', '控制设备', '用户', '事件']
+        // 上面设置Excel的表格第一行的标题
+        const filterVal = ['createTime', 'device', 'operator', 'event']
+        // 上面的index、nickName、name是tableData里对象的属性
+        const list = this.tableData // 把data里的tableData存到list
+        const data = this.formatJson(filterVal, list)
+        export_json_to_excel(tHeader, data, '智慧消防系统-控制日志')
+      })
+    },
+    formatJson (filterVal, jsonData) {
+      return jsonData.map(v => filterVal.map(j => v[j]))
+    },
+    getDeviceStatus: function () {
+      var that = this
+      this.$axios.get('/device', {
+        headers: {
+          Authorization: that.$store.state.token
+        }
+      })
+        .then(function (response) {
+          // 判断服务器返回状态码
+          var status = response.data.status
+          if (status) {
+            that.alertSwitch = JSON.parse(response.data.data).alert
+            that.fireControlSwitch = JSON.parse(response.data.data).spary
+            that.electricControlSwitch = JSON.parse(response.data.data).electric
+          }
+        })
+    },
     getTableData: function () {
       var that = this
       this.$axios.get('/controllog', {
@@ -221,7 +254,8 @@ export default {
           message: '电力系统已恢复',
           showClose: false,
           type: 'success',
-          position: 'top-left'
+          position: 'top-left',
+          duration: 1000
         })
       } else {
         this.Notification({
@@ -229,7 +263,8 @@ export default {
           message: '电力系统已关闭',
           showClose: false,
           type: 'warning',
-          position: 'top-left'
+          position: 'top-left',
+          duration: 1000
         })
       }
     },
@@ -241,7 +276,8 @@ export default {
           message: '蜂鸣器已开启',
           showClose: false,
           type: 'success',
-          position: 'top-left'
+          position: 'top-left',
+          duration: 1000
         })
       } else {
         this.alertTime = '未启动'
@@ -250,7 +286,8 @@ export default {
           message: '蜂鸣器已关闭',
           showClose: false,
           type: 'warning',
-          position: 'top-left'
+          position: 'top-left',
+          duration: 1000
         })
       }
     },
@@ -262,7 +299,8 @@ export default {
           message: '喷雾器已开启',
           showClose: false,
           type: 'success',
-          position: 'top-left'
+          position: 'top-left',
+          duration: 1000
         })
       } else {
         this.fireTime = '未启动'
@@ -271,7 +309,8 @@ export default {
           message: '喷雾器已关闭',
           showClose: false,
           type: 'warning',
-          position: 'top-left'
+          position: 'top-left',
+          duration: 1000
         })
       }
     },

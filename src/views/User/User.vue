@@ -170,28 +170,36 @@ export default {
       var data = {
         id: this.tableData[index].id
       }
-      this.$axios.post('/deleteuser', this.$qs.stringify(data), {
-        headers: {
-          Authorization: that.$store.state.token
-        }
-      })
-        .then(function (response) {
-          // 判断服务器返回状态码
-          var status = response.data.status
-          if (status) {
-            that.getTableData()
-            that.Notification({
-              title: '提示',
-              message: '删除成功！',
-              type: 'success'
-            })
-          } else {
-            that.Notification({
-              title: '删除失败',
-              message: '请稍后再试！',
-              type: 'error'
-            })
+      this.$messageBox.confirm('确认删除该用户?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$axios.post('/deleteuser', this.$qs.stringify(data), {
+          headers: {
+            Authorization: that.$store.state.token
           }
+        })
+          .then(function (response) {
+            // 判断服务器返回状态码
+            var status = response.data.status
+            if (status) {
+              that.getTableData()
+              that.Notification({
+                title: '提示',
+                message: '删除成功！',
+                type: 'success'
+              })
+            } else {
+              that.Notification({
+                title: '删除失败',
+                message: '请稍后再试！',
+                type: 'error'
+              })
+            }
+          })
+      })
+        .catch(() => {
         })
     },
     getChange (e) {
