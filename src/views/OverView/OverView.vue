@@ -6,11 +6,11 @@
         <el-col :span="18">
             <el-card shadow="hover" style="height: 400px" >
                 <el-row type="flex"  justify="space-between">
-                    <div class="card-title">数据图表</div>
+                    <div class="card-title">实时数据图表</div>
                 </el-row>
                 <el-row type="flex" class="graph">
-                  <img v-if="lineData.length === 0" style="width: 350px;height: 350px;margin: auto;" :src="require('/src/assets/nodata.png')">
-                  <lineCharts v-if="lineData.length > 0"  :charData="lineData" :id="'c1'"></lineCharts>
+                  <img v-if="lineData.length === []" style="width: 350px;height: 350px;margin: auto;" :src="require('/src/assets/nodata.png')">
+                  <lineCharts v-else :charData="lineData" :id="'c1'"></lineCharts>
                 </el-row>
             </el-card>
         </el-col>
@@ -147,6 +147,7 @@ export default {
             that.temptureData = JSON.parse(response.data.data).tempture
             that.fireData = JSON.parse(response.data.data).fire
             that.smokeData = JSON.parse(response.data.data).smoke
+            that.updateChartData()
           }
         })
     },
@@ -168,9 +169,12 @@ export default {
     },
     updateChartData: function () {
       var that = this
+      if (this.lineData.length > 60) {
+        this.$store.state.chartData = this.$store.state.chartData.splice(1, 1)
+      }
       this.$store.state.chartData.push({
         time: Date.parse(new Date()),
-        value: that.tempture
+        value: that.temptureData === -3 ? null : that.temptureData
       })
     },
     formatDate (row, column) {
@@ -188,11 +192,8 @@ export default {
     drawLineTimer: function () {
       return setTimeout(() => {
         this.updateChartData()
-        if (this.lineData.length > 60) {
-          this.$store.state.chartData.pop()
-        }
         this.lineData = this.$store.state.chartData
-      }, 60000)
+      }, 10000)
     },
     handleSizeChange (newSize) {
       // pagesize改变触发
@@ -213,22 +214,22 @@ export default {
   },
   computed: {
     fireDataShow: function () {
-      return this.fire > 650 ? '异常' : '正常'
+      return this.fireData < 850 ? '异常' : '正常'
     },
     smokeDataShow: function () {
-      return this.smoke > 650 ? '异常' : '正常'
+      return this.smokeData > 200 ? '异常' : '正常'
     }
   },
   mounted: function () {
     this.$nextTick(function () {
       this.getData()
       this.updateChartData()
+      this.lineData = this.$store.state.chartData
     })
   },
   destroyed () {
     // 页面销毁时清除数据请求定时器
     clearTimeout(this.timer)
-    clearTimeout(this.drawLineTimer)
   }
 }
 

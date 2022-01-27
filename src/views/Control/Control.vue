@@ -339,6 +339,7 @@ export default {
   mounted: function () {
     var that = this
     this.$nextTick(function () {
+      that.getTableData()
       that.timer()
     })
   },
