@@ -22,7 +22,7 @@
                     </el-col>
                     <el-col :span="16" >
                         <div style="font-size: 14px;color: #6b8196;">实时温度</div>
-                        <div style="margin-top: 20px;font-size: 20px;">{{temptureData == null ? '未获取到数据' : temptureData + '℃'}}</div>
+                        <div style="margin-top: 20px;font-size: 20px;">{{temptureData == null ? '无数据' : temptureData + '℃'}}</div>
                     </el-col>
                 </el-row>
             </el-card>
@@ -33,7 +33,8 @@
                     </el-col>
                     <el-col :span="16" >
                         <div style="font-size: 14px;color: #6b8196;">烟雾监控</div>
-                        <div style="margin-top: 20px;font-size: 20px;">{{smokeData == null ? '未获取到数据' : smokeDataShow}}</div>
+                        <div style="font-size: 14px;margin-top: 10px;margin-bottom: 10px;font-weight:bold;color: #6b8196">监测点1:<span style="font-size: 15px;color: black">{{smokeData1 == null ? '无数据' : smokeDataShow}}</span></div>
+                      <div style="font-size: 14px;margin-bottom: 10px;font-weight:bold;color: #6b8196">监测点2:<span style="font-size: 15px;color: black">{{smokeData2 == null ? '无数据' : smokeDataShow}}</span></div>
                     </el-col>
                 </el-row>
             </el-card>
@@ -44,7 +45,8 @@
                 </el-col>
                 <el-col :span="16" >
                     <div style="font-size: 14px;color: #6b8196;">火焰监控</div>
-                    <div style="margin-top: 20px;font-size: 20px;">{{fireData == null ? '未获取到数据' : fireDataShow}}</div>
+                  <div style="font-size: 14px;margin-top: 10px;margin-bottom: 10px;font-weight:bold;color: #6b8196">监测点1:<span style="font-size: 15px;color: black">{{fireData1 == null ? '无数据' : fireDataShow}}</span></div>
+                  <div style="font-size: 14px;margin-bottom: 10px;font-weight:bold;color: #6b8196">监测点2:<span style="font-size: 15px;color: black">{{fireData1 == null ? '无数据' : fireDataShow}}</span></div>
                 </el-col>
             </el-row>
         </el-card>
@@ -114,8 +116,10 @@ export default {
       total: 0,
       tableData: [],
       temptureData: null,
-      fireData: null,
-      smokeData: null,
+      fireData1: null,
+      fireData2: null,
+      smokeData1: null,
+      smokeData2: null,
       lineData: []
     }
   },
@@ -145,8 +149,10 @@ export default {
           var status = response.data.status
           if (status === 1 && JSON.parse(response.data.data) !== null) {
             that.temptureData = JSON.parse(response.data.data).tempture
-            that.fireData = JSON.parse(response.data.data).fire
-            that.smokeData = JSON.parse(response.data.data).smoke
+            that.fireData1 = JSON.parse(response.data.data).fire1
+            that.fireData2 = JSON.parse(response.data.data).fire2
+            that.smokeData1 = JSON.parse(response.data.data).smoke1
+            that.smokeData2 = JSON.parse(response.data.data).smoke2
             that.updateChartData()
           }
         })
